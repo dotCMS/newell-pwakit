@@ -55,6 +55,7 @@
     "hoist-non-react-statics": "^3.3.0",
     "jwt-decode": "^3.1.2",
     "nanoid": "^3.1.22",
+    "node-fetch": "^2.6.6",
     "prop-types": "^15.6.0",
     "query-string": "^7.0.1",
     "randomstring": "^1.2.1",

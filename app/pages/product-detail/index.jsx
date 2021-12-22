@@ -10,6 +10,7 @@ import PropTypes from 'prop-types'
 import {Helmet} from 'react-helmet'
 import {FormattedMessage, useIntl} from 'react-intl'
 
+import fetch from 'node-fetch'
 
 // Components
 import {
@@ -44,7 +45,8 @@ import {rebuildPathWithParams} from '../../utils/url'
 import {useHistory} from 'react-router-dom'
 import {useToast} from '../../hooks/use-toast'
 
-const ProductDetail = ({category, product, isLoading}) => {
+const ProductDetail = ({category, product, isLoading, entity}) => {
+    console.log(entity)
     const {formatMessage} = useIntl()
     const basket = useBasket()
     const history = useHistory()
@@ -270,6 +272,7 @@ const ProductDetail = ({category, product, isLoading}) => {
                     />
                 </Stack>
             </Stack>
+            <DotcmsContent data={entity} />
         </Box>
     )
 }
@@ -320,7 +323,17 @@ ProductDetail.getProps = async ({res, params, location, api}) => {
         throw new HTTPNotFound(category.detail)
     }
 
-    return {category, product}
+    // DotCMS Request
+
+    const dotcms = await fetch(`http://localhost:8080/api/v1/page/render/pdp`, {
+        headers: {
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGk1MmQyZDE1OC0zMzAwLTQyOWEtODNiOC00ZTQ4ZmIwNDAxN2QiLCJ4bW9kIjoxNjQwMTk1MDgzMDAwLCJuYmYiOjE2NDAxOTUwODMsImlzcyI6ImM2MDc2ZDIxNDkiLCJleHAiOjE2NDEwNTkwODMsImlhdCI6MTY0MDE5NTA4MywianRpIjoiNTE3MmE1ZjEtMzM4ZS00ZjU2LWJmY2MtMDkwNzI5ZDQ3NzgxIn0.bSHYKoKX3OpVE-XiIGcuoDs8z_I1QcVr8Ug_5GAtvww`
+        },
+        method: 'GET'
+    })
+    const {entity} = await dotcms.json()
+
+    return {category, product, entity}
 }
 
 ProductDetail.propTypes = {
