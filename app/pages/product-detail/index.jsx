@@ -46,7 +46,6 @@ import {useHistory} from 'react-router-dom'
 import {useToast} from '../../hooks/use-toast'
 
 const ProductDetail = ({category, product, isLoading, entity}) => {
-    console.log(entity)
     const {formatMessage} = useIntl()
     const basket = useBasket()
     const history = useHistory()
@@ -327,7 +326,7 @@ ProductDetail.getProps = async ({res, params, location, api}) => {
 
     const dotcms = await fetch(`http://localhost:8080/api/v1/page/render/pdp`, {
         headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGk1MmQyZDE1OC0zMzAwLTQyOWEtODNiOC00ZTQ4ZmIwNDAxN2QiLCJ4bW9kIjoxNjQwMTk1MDgzMDAwLCJuYmYiOjE2NDAxOTUwODMsImlzcyI6ImM2MDc2ZDIxNDkiLCJleHAiOjE2NDEwNTkwODMsImlhdCI6MTY0MDE5NTA4MywianRpIjoiNTE3MmE1ZjEtMzM4ZS00ZjU2LWJmY2MtMDkwNzI5ZDQ3NzgxIn0.bSHYKoKX3OpVE-XiIGcuoDs8z_I1QcVr8Ug_5GAtvww`
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGk2MTdjMmFlOC0wMjlkLTQ4YTMtYTgzOC0yZGJiMDk3YTFmZjUiLCJ4bW9kIjoxNjU0NTUwOTc5MDAwLCJuYmYiOjE2NTQ1NTA5NzksImlzcyI6ImEyNTY0YjQyZmIiLCJleHAiOjE2NTU0MTQ5NzksImlhdCI6MTY1NDU1MDk3OSwianRpIjoiOWY4YjgyMzgtYWIyOS00M2VhLWExZDgtODRiYzYyNDc1N2Y0In0.3yW_Cyz590O2JGuUcTifJdAIP-km7lheYvKZoCuSU9o`
         },
         method: 'GET'
     })

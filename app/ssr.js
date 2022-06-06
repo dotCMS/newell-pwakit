@@ -45,6 +45,13 @@ app.get('/callback?*', (req, res) => {
 app.get('/robots.txt', serveStaticFile('static/robots.txt'))
 app.get('/*', render)
 
+app.post('/ema', async (req, res) => {
+    // console.log(JSON.parse(req.body.dotPageData))
+    req.originalUrl = '/en-GB/product/25591862M'
+    req.url = '/en-GB/product/25591862M'
+    return render(req, res)
+})
+
 // SSR requires that we export a single handler function called 'get', that
 // supports AWS use of the server that we created above.
 export const get = createHandler(app)

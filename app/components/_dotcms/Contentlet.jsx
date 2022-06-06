@@ -11,7 +11,7 @@ const Components = {
                     maxHeight={200}
                     boxSize="100%"
                     objectFit="cover"
-                    src={`http://localhost:8080/dA/${image}`}
+                    src={`http://localhost:8080/${image}`}
                     alt={title}
                     marginBottom={4}
                 />
@@ -23,6 +23,7 @@ const Components = {
         )
     },
     Product: ({name, description, image}) => {
+        console.log(image);
         return (
             <>
                 <Image
@@ -37,7 +38,7 @@ const Components = {
                     {name}
                 </Text>
                 <Text marginBottom={4}>{description}</Text>
-                <Button colorScheme='blue'>Buy Now</Button>
+                <Button colorScheme="blue">Buy Now</Button>
             </>
         )
     }
@@ -47,9 +48,38 @@ function Fallback() {
     return null
 }
 
+function ContentletWrapper({
+    inode,
+    identifier,
+    contentType,
+    baseType,
+    dotLang,
+    title,
+    canEdit,
+    dotContentTypeId,
+    children
+}) {
+    return (
+        <div
+            data-dot-object="contentlet"
+            data-dot-inode={inode}
+            data-dot-identifier={identifier}
+            data-dot-type={contentType}
+            data-dot-basetype={baseType}
+            data-dot-lang={dotLang}
+            data-dot-title={title}
+            data-dot-can-edit={canEdit}
+            data-dot-content-type-id={dotContentTypeId}
+            data-dot-has-page-lang-version="true"
+        >
+            {children}
+        </div>
+    )
+}
+
 export const Contentlet = ({data}) => {
     const Component = Components[data.contentType] || Fallback
-    return <Component {...data} />
+    return <ContentletWrapper {...data}><Component {...data} /></ContentletWrapper>
 }
 
 Contentlet.propTypes = {

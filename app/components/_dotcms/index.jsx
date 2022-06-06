@@ -5,7 +5,26 @@ import {Grid, GridItem, Box} from '@chakra-ui/react'
 
 import {Contentlet} from './Contentlet'
 
+function ContainerWrapper({acceptTypes, inode, identifier, uuid, maxContentlets, children}) {
+    console.log({acceptTypes, inode, identifier, uuid, maxContentlets})
+    return (
+        <div
+            style={{display: 'block'}}
+            data-dot-accept-types={acceptTypes}
+            data-dot-object="container"
+            data-dot-inode={inode}
+            data-dot-identifier={identifier}
+            data-dot-uuid={uuid}
+            data-max-contentlets={maxContentlets}
+            data-dot-can-add="CONTENT,FORM,WIDGET"
+        >
+            {children}
+        </div>
+    )
+}
+
 const DotcmsContent = ({data}) => {
+    console.log(data.page.canEdit)
     return (
         <div>
             {data.layout.body.rows.map(({columns}, i) => (
@@ -16,7 +35,17 @@ const DotcmsContent = ({data}) => {
                             colEnd={leftOffset + width}
                             key={`col-${k}`}
                         >
-                            {containers.map(({identifier, uuid}, l) => {
+                            {containers.map((containerFull, l) => {
+                                const {identifier, uuid} = containerFull
+                                const acceptTypes = data.containers[identifier].containerStructures
+                                    .map(({contentTypeVar}) => contentTypeVar)
+                                    .join(',')
+
+                                const container = {
+                                    ...data.containers[identifier].container,
+                                    uuid,
+                                    acceptTypes
+                                }
                                 const contentlets =
                                     data.containers[identifier].contentlets[`uuid-${uuid}`]
 
@@ -28,14 +57,19 @@ const DotcmsContent = ({data}) => {
                                         borderRadius="lg"
                                         key={`container-${l}`}
                                     >
-                                        {contentlets.map((contentlet, m) => {
-                                            return (
-                                                <Contentlet
-                                                    data={contentlet}
-                                                    key={`contentlet-${m}`}
-                                                />
-                                            )
-                                        })}
+                                        <ContainerWrapper {...container}>
+                                            {contentlets.map((contentlet, m) => {
+                                                return (
+                                                    <Contentlet
+                                                        data={{
+                                                            ...contentlet,
+                                                            canEdit: data.page.canEdit
+                                                        }}
+                                                        key={`contentlet-${m}`}
+                                                    />
+                                                )
+                                            })}
+                                        </ContainerWrapper>
                                     </Box>
                                 )
                             })}
