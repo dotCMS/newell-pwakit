@@ -290,7 +290,7 @@ ProductDetail.shouldGetProps = ({previousLocation, location}) => {
     )
 }
 
-ProductDetail.getProps = async ({res, params, location, api}) => {
+ProductDetail.getProps = async ({res, params, location, api, req}) => {
     const {productId} = params
     let category, product
     const urlParams = new URLSearchParams(location.search)
@@ -322,14 +322,22 @@ ProductDetail.getProps = async ({res, params, location, api}) => {
         throw new HTTPNotFound(category.detail)
     }
 
-    // DotCMS Request
+    // dotCMS EMA
+    const emaEntity = JSON.parse(req.body.dotPageData).entity
 
+    if (emaEntity) {
+        console.log('RENDERING DOTCMS EMA')
+        return {category, product, entity: emaEntity}
+    }
+
+    // dotCMS Request
     const dotcms = await fetch(`http://localhost:8080/api/v1/page/render/pdp`, {
         headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGk2MTdjMmFlOC0wMjlkLTQ4YTMtYTgzOC0yZGJiMDk3YTFmZjUiLCJ4bW9kIjoxNjU0NTUwOTc5MDAwLCJuYmYiOjE2NTQ1NTA5NzksImlzcyI6ImEyNTY0YjQyZmIiLCJleHAiOjE2NTU0MTQ5NzksImlhdCI6MTY1NDU1MDk3OSwianRpIjoiOWY4YjgyMzgtYWIyOS00M2VhLWExZDgtODRiYzYyNDc1N2Y0In0.3yW_Cyz590O2JGuUcTifJdAIP-km7lheYvKZoCuSU9o`
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGlhNTJhZDEwYy0xZDBmLTRmMDUtOGY4Ny02NGZiYzQ0ZGNhZjIiLCJ4bW9kIjoxNjU2NTIzOTkxMDAwLCJuYmYiOjE2NTY1MjM5OTEsImlzcyI6IjI3MWI5MTVkYzEiLCJsYWJlbCI6InB3YS1raXQiLCJleHAiOjE3NTExNzY4MDAsImlhdCI6MTY1NjUyMzk5MSwianRpIjoiNzUzODIwMDctODVhYi00NGIwLTg0MjctNTc3NDZiM2EzMDhiIn0.JMAWGkVHabMj5q7Y09-9bkasRg1G_29Re3zgdDYLhZ4`
         },
         method: 'GET'
     })
+
     const {entity} = await dotcms.json()
 
     return {category, product, entity}

@@ -46,7 +46,7 @@ app.get('/robots.txt', serveStaticFile('static/robots.txt'))
 app.get('/*', render)
 
 app.post('/ema', async (req, res) => {
-    // console.log(JSON.parse(req.body.dotPageData))
+
     req.originalUrl = '/en-GB/product/25591862M'
     req.url = '/en-GB/product/25591862M'
     return render(req, res)
