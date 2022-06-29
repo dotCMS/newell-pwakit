@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Text, Image, Button} from '@chakra-ui/react'
 
+import {useEma} from '../../hooks'
+
 const Components = {
     // eslint-disable-next-line react/display-name
     webPageContent: ({title, body, image}) => {
@@ -23,7 +25,7 @@ const Components = {
         )
     },
     Product: ({name, description, image}) => {
-        console.log(image);
+        console.log(image)
         return (
             <>
                 <Image
@@ -59,7 +61,9 @@ function ContentletWrapper({
     dotContentTypeId,
     children
 }) {
-    return (
+    const {isEma} = useEma()
+
+    return isEma ? (
         <div
             data-dot-object="contentlet"
             data-dot-inode={inode}
@@ -74,12 +78,18 @@ function ContentletWrapper({
         >
             {children}
         </div>
+    ) : (
+        <>{children}</>
     )
 }
 
 export const Contentlet = ({data}) => {
     const Component = Components[data.contentType] || Fallback
-    return <ContentletWrapper {...data}><Component {...data} /></ContentletWrapper>
+    return (
+        <ContentletWrapper {...data}>
+            <Component {...data} />
+        </ContentletWrapper>
+    )
 }
 
 Contentlet.propTypes = {

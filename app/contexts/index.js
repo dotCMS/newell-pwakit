@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 /**
@@ -31,11 +31,11 @@ import PropTypes from 'prop-types'
  *
  */
 export const CategoriesContext = React.createContext()
-export const CategoriesProvider = ({categories: initialCategories = {}, children}) => {
+export const CategoriesProvider = ({ categories: initialCategories = {}, children }) => {
     const [categories, setCategories] = useState(initialCategories)
 
     return (
-        <CategoriesContext.Provider value={{categories, setCategories}}>
+        <CategoriesContext.Provider value={{ categories, setCategories }}>
             {children}
         </CategoriesContext.Provider>
     )
@@ -69,11 +69,11 @@ CategoriesProvider.propTypes = {
  *
  */
 export const CurrencyContext = React.createContext()
-export const CurrencyProvider = ({currency: initialCurrency, children}) => {
+export const CurrencyProvider = ({ currency: initialCurrency, children }) => {
     const [currency, setCurrency] = useState(initialCurrency)
 
     return (
-        <CurrencyContext.Provider value={{currency, setCurrency}}>
+        <CurrencyContext.Provider value={{ currency, setCurrency }}>
             {children}
         </CurrencyContext.Provider>
     )
@@ -82,4 +82,20 @@ export const CurrencyProvider = ({currency: initialCurrency, children}) => {
 CurrencyProvider.propTypes = {
     children: PropTypes.node.isRequired,
     currency: PropTypes.string
+}
+
+
+/**
+ * TODO: NEEDS DOC
+ */
+
+export const EMAContext = React.createContext()
+export const EMAProvider = ({ isEma, children }) => {
+    /* Creating a context provider for the EMA context. */
+    return <EMAContext.Provider value={{ isEma }}>{children}</EMAContext.Provider>
+}
+
+EMAProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+    isEma: PropTypes.bool
 }

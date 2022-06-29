@@ -323,7 +323,7 @@ ProductDetail.getProps = async ({res, params, location, api, req}) => {
     }
 
     // dotCMS EMA
-    const emaEntity = JSON.parse(req.body.dotPageData).entity
+    const emaEntity = req?.body?.dotPageData ? JSON.parse(req?.body?.dotPageData).entity : null
 
     if (emaEntity) {
         console.log('RENDERING DOTCMS EMA')

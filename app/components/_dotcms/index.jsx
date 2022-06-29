@@ -5,9 +5,12 @@ import {Grid, GridItem, Box} from '@chakra-ui/react'
 
 import {Contentlet} from './Contentlet'
 
+import {useEma} from '../../hooks'
+
 function ContainerWrapper({acceptTypes, inode, identifier, uuid, maxContentlets, children}) {
-    console.log({acceptTypes, inode, identifier, uuid, maxContentlets})
-    return (
+    const {isEma} = useEma()
+
+    return isEma ? (
         <div
             style={{display: 'block'}}
             data-dot-accept-types={acceptTypes}
@@ -20,11 +23,12 @@ function ContainerWrapper({acceptTypes, inode, identifier, uuid, maxContentlets,
         >
             {children}
         </div>
+    ) : (
+        <>{children}</>
     )
 }
 
 const DotcmsContent = ({data}) => {
-    console.log(data.page.canEdit)
     return (
         <div>
             {data.layout.body.rows.map(({columns}, i) => (
