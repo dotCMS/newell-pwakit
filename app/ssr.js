@@ -46,6 +46,14 @@ app.get('/robots.txt', serveStaticFile('static/robots.txt'))
 app.get('/*', render)
 
 app.post('/ema', async (req, res) => {
+    /**
+     * From the body in the request we can get all the properties in the page. We have to get
+     * the page property with the information of the CC product id
+     * 
+     * Ex. JSON.parse(req?.body?.dotPageData).entity.page.{FIELD_NAME}
+     * 
+     * With that will be creating the new originalUrl and url
+     */
 
     req.originalUrl = '/en-GB/product/25591862M'
     req.url = '/en-GB/product/25591862M'
